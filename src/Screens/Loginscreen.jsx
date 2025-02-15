@@ -42,7 +42,7 @@ const Loginscreen = () => {
             if (data.token) {
                 localStorage.setItem("token", data.token);
                 fetchUserRole(data.token); // Call immediately
-                // toast.success("Login Successful!", { autoClose: 2000 });
+                toast.success("Login Successful!", { autoClose: 2000 });
             }
             
 

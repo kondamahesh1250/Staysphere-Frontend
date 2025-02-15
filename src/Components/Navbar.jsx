@@ -20,20 +20,17 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-
-    const isGuest = JSON.parse(localStorage.getItem("guestUser")); // Check guest mode
+    const isGuest = JSON.parse(localStorage.getItem("guestUser"));
     if (isGuest) {
       setUser(isGuest);
       return;
     }
-
+  
     if (token) {
       fetchUser(token);
-    }else{
-      navigate("/login")
     }
-
-  }, [token, navigate]); // Run on token change
+  }, [token]);
+  
 
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -82,12 +79,16 @@ const Navbar = () => {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("guestUser");
-    setIsDropdownOpen(false); // Close the dropdown
-    setIsMenuOpen(false); // Close the hamburger menu
     setUser(null);
+    setIsDropdownOpen(false);
+    setIsMenuOpen(false);
     toast.success("Logout Successful!", { autoClose: 2000 });
-    navigate("/login");
+  
+    setTimeout(() => {
+      navigate("/login");
+    }, 500);  // Small delay to allow state updates
   };
+  
 
   // Define paths where navbar items should be hidden
   const hideNavbarItemsPaths = [
