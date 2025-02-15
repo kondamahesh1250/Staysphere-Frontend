@@ -28,7 +28,7 @@ const Navbar = () => {
     }
 
     if (!token) {
-      navigate("/login");
+      navigate("/");
       return;
     }
 
