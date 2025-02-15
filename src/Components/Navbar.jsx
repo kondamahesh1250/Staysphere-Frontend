@@ -27,12 +27,10 @@ const Navbar = () => {
       return;
     }
 
-    if (!token) {
-      navigate("/");
-      return;
+    if (token) {
+      fetchUser(token);
     }
 
-    fetchUser(token);
   }, [token, navigate]); // Run on token change
 
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
