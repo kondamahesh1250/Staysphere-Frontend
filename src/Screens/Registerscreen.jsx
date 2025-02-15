@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import "../App.css"
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import Loader from '../Components/Loader';
-import { Failure } from '../Components/Failure';
-import Success from "../Components/Success";
-import { Link } from "react-router-dom";
-import GoogleLogin from "./GoogleLogin";
+import { toast } from 'react-toastify';
+import Loader from "../Components/Loader";
+import GoogleLogin from "../Screens/GoogleLogin"; 
+import "../App.css";  
+
 
 const Registerscreen = () => {
     const [formData, setFormData] = useState({
@@ -15,11 +15,9 @@ const Registerscreen = () => {
         c_password: "",
     });
 
+    const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState();
-    const [success, setSuccess] = useState();
-    const [message,setMessage] = useState()
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -29,53 +27,53 @@ const Registerscreen = () => {
         }));
     }
 
+    const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
     async function handleSubmit(e) {
         e.preventDefault();
         const { name, email, password, c_password } = formData;
 
         if (!name || !email || !password || !c_password) {
-            alert("All fields are required!");
+            toast.error("All fields are required!", { autoClose: 3000 });
             return;
         }
 
         if (password !== c_password) {
-            alert("Passwords do not match!");
+            toast.error("Passwords do not match!", { autoClose: 3000 });
             return;
         }
 
         try {
             setLoading(true);
-            const result = (await axios.post('/api/users/register', formData)).data;
+            const { data } = await axios.post(`${BASE_URL}/users/register`, formData);
             setLoading(false);
 
-            console.log(result)
-            if (result.status==400) {
-                setSuccess(true);
-                setMessage(result.message)
-            } else {
-                setSuccess(true);
-                setMessage(result.message)
-                window.location.href = "/login";
+            if (data) {
+                toast.success("Registration Successful! Please Login", { autoClose: 2000 });
+                setTimeout(() => navigate("/login"), 2000);
             }
             setFormData({ name: "", email: "", password: "", c_password: "" });
 
         } catch (error) {
             console.log(error);
             setLoading(false);
-            setError(true);
+            if (error.response && error.response.data.message) {
+                toast.error(error.response.data.message, { autoClose: 3000 });
+            } else {
+                toast.error("Something went wrong! Please try again.", { autoClose: 3000 });
+            }
         }
     }
 
     return (
         <>
             {loading && (<Loader />)}
-            {error && (<Failure />)}
             <div className="registercontainer">
                 <div className='registerhome'>
                     <Link to={"/"} ><button><i class="fa-solid fa-house"></i> Home</button></Link>
                 </div>
                 <div>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} className="register-form">
                         <h1>Register Screen</h1>
                         <div>
                             <label htmlFor="name">Name</label>
@@ -93,14 +91,11 @@ const Registerscreen = () => {
                             <label htmlFor="c_password">Confirm Password</label>
                             <input type="password" name="c_password" id="c_password" value={formData.c_password} onChange={handleChange} />
                         </div>
-                        <button type="submit">Register</button>
-                        <div style={{justifyContent:"center"}}>
-                            {success && (<Success message={message} />)}
-                        </div>
+                        <button type="submit" className="registerbtn">Register</button>
                     </form>
                 </div>
                 <div>
-                    <GoogleLogin name="Sign up with Google"/>
+                    <GoogleLogin name="Sign up with Google" />
                 </div>
             </div>
 

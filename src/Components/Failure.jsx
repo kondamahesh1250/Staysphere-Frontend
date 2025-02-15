@@ -3,14 +3,16 @@ import React from 'react'
 export const Failure = ({ message }) => {
 
   const styling = {
+    display:"flex",
+    justifyContent:"center",
+    alignItems:"center",
+    height:"20vh",
     color: 'red',
-    fontSize: '24px',
-    fontWeight: 'bold',
-    textAlign: 'center'
+    fontWeight: 'bold',    
   }
   return (
     <div style={styling}>
-      <div>{message}</div>
+      <p style={{ fontSize: "30px" }}>{message}</p>
     </div>
   )
 }

@@ -237,6 +237,8 @@
 
 /* Large Devices (Laptops and Desktops) */
 @media screen and (min-width: 901px) and (max-width: 1200px) {
+
+    
     .navbar-container {
         padding: 1rem 3rem;
     }
@@ -265,7 +267,7 @@
 
     .dropdown {
         position: absolute !important;
-        right: 0 !important;
+        right: -20px !important;
     }
 }
 
@@ -285,7 +287,7 @@
 
     .dropdown {
         position: absolute !important;
-        right: 0 !important;
+        right: 10px !important;
     }
 
 }
@@ -307,7 +309,7 @@
 
     .dropdown {
         position: absolute !important;
-        right: 0 !important;
+        right: 10px !important;
     }
 }
 
@@ -338,6 +340,7 @@
 .landingbtn {
     background-color: rgb(248, 240, 240);
     color: black;
+    border-radius: 5px;
 }
 
 .landingbtn:hover {
@@ -735,7 +738,7 @@
     display: flex;
     flex-direction: row;
     gap: 30px;
-    max-width: 1000px;
+    width: 60vw;
     margin: 50px auto;
     padding: 20px;
     border: 1px solid #ddd;
@@ -891,7 +894,7 @@
     padding: 20px;
     padding: auto;
     width: 45%;
-    height: 60vh;
+    min-height: 60vh;
     border: 1px solid #ddd;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -902,7 +905,7 @@
 
 .roomright {
     width: 40%;
-    height: 60vh;
+    min-height: 60vh;
     border: 1px solid;
     padding: 20px;
     border-radius: 5px;
@@ -910,6 +913,9 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.roomright>h2 {
+    padding-bottom: 10px;
+}
 
 .caroimg {
     width: 90%;
@@ -1038,7 +1044,7 @@
     gap: 20px;
     width: 100%;
     min-height: 100vh;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     padding: 20px;
 }
@@ -1047,7 +1053,7 @@
     width: 100%;
     max-width: 600px;
     border: 1px solid #ccc;
-    height: auto;
+    height: 60vh;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     padding: 15px;
@@ -1057,7 +1063,7 @@
 .bookimage h1 {
     font-size: 20px;
     text-align: center;
-    margin-bottom: 20px;
+    margin: 30px;
 }
 
 .bookimage img {
@@ -1071,7 +1077,8 @@
 .bookdetails {
     border: 1px solid #ccc;
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
+    height: 65vh;
     text-align: left;
     padding: 20px;
     border-radius: 10px;
@@ -1115,6 +1122,8 @@
     .bookdetails {
         width: 90%;
         margin: 0 auto;
+        height: 70vh;
+
     }
 
     .bookimage h1 {
@@ -1149,6 +1158,8 @@
     .bookdetails {
         width: 80%;
         margin: 0 auto;
+        height: 80vh;
+
     }
 }
 
@@ -1165,6 +1176,8 @@
 
     .bookdetails {
         width: 30%;
+    height: 80vh;
+
     }
 }
 
@@ -1195,7 +1208,7 @@
     color: #000;
 }
 
-form {
+.register-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -1205,11 +1218,11 @@ form {
 
 }
 
-form>h1 {
+.register-form>h1 {
     font-size: 30px;
 }
 
-form>div {
+.register-form>div {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1254,6 +1267,11 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+}
+
+.registerbtn{
+    background-color: black;
+    color: white;
 }
 
 button:hover {
@@ -1332,6 +1350,9 @@ button:hover {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .login-form>h1 {
@@ -1442,8 +1463,8 @@ button:hover {
 }
 
 .profile-heading {
-    font-size: 28px;
-    margin-bottom: 20px;
+    font-size: 32px;
+    margin-bottom: 30px;
     color: #333;
     text-align: center;
 }
@@ -1452,6 +1473,7 @@ button:hover {
     font-size: 18px;
     margin: 10px 0;
     color: #555;
+    font-weight: bold;
 }
 
 /* Responsive Design */
@@ -1573,8 +1595,14 @@ button:hover {
     flex-direction: column;
     gap: 20px;
     width: 100%;
-    height: 100vh;
+    min-height: 125vh;
     align-items: center;
+}
+
+.addroomcont{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .leftinput {

@@ -1,15 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { headItems } from "./navitems";
-import "../App.css"
-import logo from "./logo.webp";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import axios from "axios";
+import { headItems } from "./navitems";
+import logo from "./logo.webp";
+import "../App.css"
+
 
 const Navbar = () => {
+  const token = localStorage.getItem("token")
+  const [user, setUser] = useState(null); // For user data
   const location = useLocation();
+  const navigate = useNavigate();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false); // For hamburger menu
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // For dropdown menu visibility
-  const [user, setUser] = useState(null); // For user data
 
   const menuRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -18,29 +23,33 @@ const Navbar = () => {
 
     const isGuest = JSON.parse(localStorage.getItem("guestUser")); // Check guest mode
     if (isGuest) {
-     return setUser(isGuest);
+      setUser(isGuest);
+      return;
     }
 
-    const fetchUser = async () => {
-      const token = localStorage.getItem("token"); // Get token from storage
-      if (!token) {
-        return;
-      }; // If no token, user is not logged in
+    if (!token) {
+      navigate("/login");
+      return;
+    }
 
-      try {
-        const response = await axios.get('/api/users/verifyuser', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setUser(response?.data); // Set user data from API response
-      } catch (error) {
-        console.error("Failed to fetch user:", error);
-        localStorage.removeItem("token"); // Remove invalid token
-      }
-    };
+    fetchUser(token);
+  }, [token, navigate]); // Run on token change
 
-    fetchUser();
-  }, [localStorage.getItem("token"), localStorage.getItem("guestUser")]); // Run on token change
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
+  const fetchUser = async (token) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/users/verifyuser`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setUser(response?.data);
+
+    } catch (error) {
+      console.error("Failed to fetch user:", error);
+      localStorage.removeItem("token");
+      localStorage.removeItem("guestUser");
+    }
+  };
 
   // Close both dropdown and hamburger when clicking outside
   const handleClickOutside = (event) => {
@@ -71,11 +80,13 @@ const Navbar = () => {
   };
 
   const logout = () => {
-    // localStorage.removeItem("currentUser");
     localStorage.removeItem("token");
     localStorage.removeItem("guestUser");
-    localStorage.removeItem("role");
-    window.location.href = "/login";
+    setIsDropdownOpen(false); // Close the dropdown
+    setIsMenuOpen(false); // Close the hamburger menu
+    setUser(null);
+    navigate("/login");
+    toast.success("Logout Successful!", { autoClose: 2000 });
   };
 
   // Define paths where navbar items should be hidden
@@ -98,7 +109,6 @@ const Navbar = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
-  console.log(user)
 
   return (
     <nav>
@@ -166,20 +176,29 @@ const Navbar = () => {
               </button>
 
               <div className="dropdown-menu bg-white" style={{ textAlign: "center" }}>
-                <a className="dropdown-item text-dark" href="/"><i class="fa-solid fa-house"></i>
+                <Link className="dropdown-item text-dark" to="/" onClick={() => {
+                  setIsDropdownOpen(false);
+                  setIsMenuOpen(false);  // Close hamburger menu as well
+                }}><i class="fa-solid fa-house"></i>
                   Home
-                </a>
-                <a className="dropdown-item text-dark" href="/profile"><i class="fa-solid fa-user"></i>
+                </Link>
+                <Link className="dropdown-item text-dark" to="/profile" onClick={() => {
+                  setIsDropdownOpen(false);
+                  setIsMenuOpen(false);  // Close hamburger menu as well
+                }}><i class="fa-solid fa-user"></i>
                   Profile
-                </a>
+                </Link>
                 {user.isAdmin && (
-                  <a className="dropdown-item text-dark" href="/admin"><i class="fa-solid fa-user-tie"></i>
+                  <Link className="dropdown-item text-dark" to="/admin" onClick={() => {
+                    setIsDropdownOpen(false);
+                    setIsMenuOpen(false);  // Close hamburger menu as well
+                  }}><i class="fa-solid fa-user-tie"></i>
                     Admin
-                  </a>
+                  </Link>
                 )}
-                <a className="dropdown-item text-dark" href="#" onClick={logout}><i class="fa-solid fa-right-from-bracket"></i>
+                <Link className="dropdown-item text-dark" onClick={logout}><i class="fa-solid fa-right-from-bracket"></i>
                   Logout
-                </a>
+                </Link>
               </div>
             </div>
           ) : (

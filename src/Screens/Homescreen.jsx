@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import { DatePicker } from 'antd';
-import "../App.css"
 import Room from '../Components/Room';
 import Loader from '../Components/Loader';
 import { Failure } from '../Components/Failure';
 import { Link } from 'react-router-dom';
-
+import "../App.css";
 
 const { RangePicker } = DatePicker;
 
@@ -15,19 +14,21 @@ const Homescreen = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [fromDate, setFromDate] = useState();
-  const [toDate, setToDate] = useState();
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
   const [duplicateRooms, setDuplicateRooms] = useState([]);
 
   const [searchkey, setSearchKey] = useState('');
   const [type, setType] = useState('all');
+
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
 
     const fetchRooms = async () => {
       try {
         setLoading(true);
-        const data = (await axios.get('/api/rooms/getallrooms')).data;
+        const data = (await axios.get(`${BASE_URL}/rooms/getallrooms`)).data;
         setRooms(data);
         setDuplicateRooms(data);
         setLoading(false);
@@ -89,6 +90,7 @@ const Homescreen = () => {
     if (e !== 'all') {
       const tempRooms = duplicateRooms.filter(room => room.type.toLowerCase() === e.toLowerCase());
       setRooms(tempRooms);
+      setError(true);
     }
     else {
       setRooms(duplicateRooms);

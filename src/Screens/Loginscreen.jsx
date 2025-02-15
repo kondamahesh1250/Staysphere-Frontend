@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
-import "../App.css"
-import axios from "axios";
-import Loader from '../Components/Loader';
-import { Failure } from '../Components/Failure';
-import { ToastContainer, toast } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from 'react-toastify';
+import Loader from '../Components/Loader';
+import "../App.css"
 
 const Loginscreen = () => {
     const [formData, setFormData] = useState({
@@ -15,19 +13,6 @@ const Loginscreen = () => {
 
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
-
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        const role = localStorage.getItem("role"); // Get stored role
-
-        if (token && role) {
-            navigate(role === "admin" ? "/admin" : "/homescreen", { replace: true });
-        }
-
-        console.log(role)
-
-    }, [navigate]);
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -37,81 +22,60 @@ const Loginscreen = () => {
         }));
     }
 
+    const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
     async function handleSubmit(e) {
         e.preventDefault();
 
         const { email, password } = formData;
 
         if (!email || !password) {
-            toast.error("All fields are required!", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
+            toast.error("All fields are required!", { autoClose: 3000 });
             return;
         }
 
         try {
             setLoading(true);
-            const response = await axios.post('/api/users/login', formData);
+            const { data } = await axios.post(`${BASE_URL}/users/login`, formData);
             setLoading(false);
 
-            localStorage.setItem("token", response.data.token);
+            if (data.token) {
+                localStorage.setItem("token", data.token);
 
-            toast.success("Login Successful!", {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                onClose: () => fetchUserRole(response.data.token), // Redirect after toast closes
-            });
+                toast.success("Login Successful!", {
+                    autoClose: 2000,
+                    onClose: () => fetchUserRole(data.token), // Redirect after toast closes
+                });
+            }
 
 
         } catch (error) {
             setLoading(false);
-            setError(true);
-
             if (error.response) {
-                toast.error(error.response?.status === 400 ? "Invalid Credentials!" : "Something went wrong. Please try again!", {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                });
+                toast.error(error.response?.status === 400 ? "Invalid Credentials!" : "Something went wrong. Please try again!", { autoClose: 2000 });
             }
         }
     }
 
     async function fetchUserRole(token) {
         try {
-            const response = await axios.get('/api/users/verifyuser', {
+            const response = await axios.get(`${BASE_URL}/users/verifyuser`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            const userRole = response.data.isAdmin;
-            console.log(userRole);
+            const userRole = response.data;
+            if (userRole) {
+                setFormData({ email: "", password: "" });
+                navigate(userRole.isAdmin ? "/admin" : "/homescreen", { replace: true });
 
-            localStorage.setItem("role", userRole ? "admin" : "user"); // Store role for persistence
-
-            setFormData({ email: "", password: "" });
-
-            navigate(userRole ? "/admin" : "/homescreen", { replace: true });
-
-             // Prevent navigating back to login page
-             window.history.pushState(null, "", window.location.href);
-             window.onpopstate = () => {
-                 window.history.pushState(null, "", window.location.href);
-             };
+                // Prevent navigating back to login page
+                window.history.pushState(null, "", window.location.href);
+                window.onpopstate = () => {
+                    window.history.pushState(null, "", window.location.href);
+                };
+            }
         } catch (error) {
             console.log(error);
             localStorage.removeItem("token");
-            localStorage.removeItem("role");
         }
     }
 
@@ -126,9 +90,6 @@ const Loginscreen = () => {
         navigate("/homescreen", { replace: true });
     }
 
-
-
-
     return (
         <>
             {loading && <Loader />}
@@ -140,28 +101,13 @@ const Loginscreen = () => {
                     <h1 className="form-title">Login Screen</h1>
                     <div className="form-group">
                         <label htmlFor="email" className="form-label">Email</label>
-                        <input
-                            type="email"
-                            name="email"
-                            id="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            className="form-input"
-                        />
+                        <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className="form-input" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="password" className="form-label">Password</label>
-                        <input
-                            type="password"
-                            name="password"
-                            id="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            className="form-input"
-                        />
+                        <input type="password" name="password" id="password" value={formData.password} onChange={handleChange} className="form-input" />
                     </div>
                     <button type="submit" className="form-button">Login</button>
-                    <ToastContainer />
                 </form>
                 <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
                     <button className="form-button" style={{ backgroundColor: "white", color: "black", borderRadius: "5px" }} onClick={handleGuest}>Continue as Guest

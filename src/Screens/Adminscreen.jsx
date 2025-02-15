@@ -1,44 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import "../App.css";
-import { Tabs } from 'antd';
-import axios from 'axios';
-import Loader from '../Components/Loader';
-import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import { Failure } from '../Components/Failure';
+import axios from 'axios';
 import { Modal, Button } from "react-bootstrap";
+import Swal from 'sweetalert2';
+import { Tabs, ConfigProvider } from 'antd';
+import { Failure } from '../Components/Failure';
+import Loader from '../Components/Loader';
+import "../App.css";
 
 const Adminscreen = () => {
 
     const navigate = useNavigate();
+    const [token, setToken] = useState(localStorage.getItem("token"));
+
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-
         if (!token) {
             navigate("/homescreen", { replace: true });
             return;
         }
-        async function fetchUserRole(token) {
-            try {
-                const response = await axios.get('/api/users/verifyuser', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                const data = response?.data;
 
-                // Redirect if user is not an admin
-                if (!data.isAdmin) {
-                    navigate("/homescreen", { replace: true });
-                }
+        fetchUserRole(token);
+    }, [token]);
 
-            } catch (error) {
-                console.log(error);
-                localStorage.removeItem("token");
+    const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+    async function fetchUserRole(token) {
+        try {
+            const response = await axios.get(`${BASE_URL}/users/verifyuser`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            const data = response?.data;
+
+            // Redirect if user is not an admin
+            if (!data.isAdmin) {
                 navigate("/homescreen", { replace: true });
             }
+
+        } catch (error) {
+            console.log(error);
+            localStorage.removeItem("token");
+            setToken(null);
         }
-        fetchUserRole(token);
-    }, [navigate])
+    }
 
 
     const items = [
@@ -75,7 +79,21 @@ const Adminscreen = () => {
     return (
         <div style={{ marginTop: "10px", marginLeft: "10px", marginRight: "10px" }}>
             <h2 style={{ marginLeft: "10px", marginTop: "20px" }}>Admin Panel</h2>
-            <Tabs defaultActiveKey="1" items={items} />
+            <ConfigProvider
+                theme={{
+                    components: {
+                        Tabs: {
+                            itemColor: "black", // Inactive tab color
+                            itemActiveColor: "black", // Active tab color
+                            inkBarColor: "#d9d9d9", // Active underline color
+                            itemHoverColor: "#d9d9d9",
+                            itemSelectedColor: "black",
+                        },
+                    },
+                }}
+            >
+                <Tabs defaultActiveKey="1" items={items} />
+            </ConfigProvider>
         </div>
     )
 }
@@ -89,13 +107,13 @@ export const Bookings = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
-
+    const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
     useEffect(() => {
         async function Bookings() {
             try {
                 setLoading(true);
-                const data = (await axios.get("/api/bookings/getallbookings")).data;
+                const data = (await axios.get(`${BASE_URL}/bookings/getallbookings`)).data;
                 setBookings(data);
                 setLoading(false);
                 setError(false);
@@ -116,7 +134,7 @@ export const Bookings = () => {
             <div className="table-responsive mb-5">
                 {bookings.length > 0 ? (
                     <>
-                        <table className="table table-bordered table-hover">
+                        <table className="table table-bordered table-hover text-center">
                             <thead className="thead-dark">
                                 <tr>
                                     <th>Booking ID</th>
@@ -130,12 +148,12 @@ export const Bookings = () => {
                             <tbody>
                                 {bookings.length > 0 &&
                                     bookings.map((booking) => (
-                                        <tr key={booking._id}>
-                                            <td>{booking._id}</td>
-                                            <td>{booking.userid}</td>
-                                            <td>{booking.room}</td>
-                                            <td>{booking.fromStartDate}</td>
-                                            <td>{booking.toEndDate}</td>
+                                        <tr key={booking?._id}>
+                                            <td>{booking?._id}</td>
+                                            <td>{booking?.userid}</td>
+                                            <td>{booking?.room}</td>
+                                            <td>{booking?.fromStartDate}</td>
+                                            <td>{booking?.toEndDate}</td>
                                             <td>
                                                 <span
                                                     className={`badge ${booking.status === 'cancelled'
@@ -157,7 +175,7 @@ export const Bookings = () => {
                     </div>
                 </>)}
             </div>
-            {error && bookings.length == 0 && (<Failure message={"Sorry , we are unable to fetch bookings at this time."} />)}
+            {error && (<Failure message={"Sorry , we are unable to fetch bookings at this time."} />)}
 
         </div>
 
@@ -203,6 +221,8 @@ export const Rooms = () => {
         }));
     };
 
+    const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
     const handleSaveChanges = async () => {
         if (!selectedRoom) {
             alert('Please select a room to update');
@@ -210,7 +230,7 @@ export const Rooms = () => {
         }
 
         try {
-            const { data } = await axios.put(`/api/rooms/update/${selectedRoom._id}`, updatedData);
+            const { data } = await axios.put(`${BASE_URL}/rooms/update/${selectedRoom._id}`, updatedData);
             if (data) {
                 Swal.fire('Success!', 'Room details updated successfully', 'success');
                 Roomfetch();
@@ -232,7 +252,7 @@ export const Rooms = () => {
         }
         const roomid = selectedRoom._id;
         try {
-            const { data } = await axios.delete(`/api/rooms/delete/${roomid}`)
+            const { data } = await axios.delete(`${BASE_URL}/rooms/delete/${roomid}`)
             if (data) {
                 Swal.fire('Success!', 'Room deleted successfully', 'success');
                 Roomfetch();
@@ -251,7 +271,7 @@ export const Rooms = () => {
     async function Roomfetch() {
         try {
             setLoading(true);
-            const { data } = await axios.get("/api/rooms/getallrooms");
+            const { data } = await axios.get(`${BASE_URL}/rooms/getallrooms`);
             setRooms(data);
             setLoading(false);
             setError(false);
@@ -289,13 +309,13 @@ export const Rooms = () => {
                             <tbody>
                                 {rooms.length > 0 &&
                                     rooms.map((room) => (
-                                        <tr key={room._id}>
-                                            <td>{room._id}</td>
-                                            <td>{room.name}</td>
-                                            <td>{room.type}</td>
-                                            <td>{room.rentperday}</td>
-                                            <td>{room.maxcount}</td>
-                                            <td>{room.phonenumber}</td>
+                                        <tr key={room?._id}>
+                                            <td>{room?._id}</td>
+                                            <td>{room?.name}</td>
+                                            <td>{room?.type}</td>
+                                            <td>{room?.rentperday}</td>
+                                            <td>{room?.maxcount}</td>
+                                            <td>{room?.phonenumber}</td>
                                             <td><button className='a_room_btn' onClick={() => handleShow(room)}>Modify</button></td>
                                             <td><button className='a_room_btn' onClick={() => handleShowDelete(room)}>Delete</button></td>
                                         </tr>
@@ -346,7 +366,7 @@ export const Rooms = () => {
                                         </div>
                                         <div className="mb-3">
                                             <label className="form-label">Phone Number</label>
-                                            <input type="number" className="form-control" name='maxcount' value={updatedData?.phonenumber} onChange={handleChange} />
+                                            <input type="number" className="form-control" name='phonenumber' value={updatedData?.phonenumber} onChange={handleChange} />
                                         </div>
                                     </form>
                                 )}
@@ -368,7 +388,7 @@ export const Rooms = () => {
                 </>)}
             </div>
 
-            {error && rooms.length == 0 && (<Failure message={"Sorry , we are unable to fetch rooms at this time."} />)}
+            {error && (<Failure message={"Sorry , we are unable to fetch rooms at this time."} />)}
 
         </div>
 
@@ -393,6 +413,8 @@ export const Users = () => {
     }
 
 
+    const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
     const handleDelete = async () => {
         if (!selectedUser) {
             alert("please select user");
@@ -400,7 +422,7 @@ export const Users = () => {
         }
         try {
             setLoading(true);
-            const { data } = await axios.delete(`/api/users/delete/${selectedUser}`);
+            const { data } = await axios.delete(`${BASE_URL}/users/delete/${selectedUser}`);
             setLoading(false);
             if (data) {
                 Swal.fire('Success!', 'User removed successfully', 'success');
@@ -420,7 +442,7 @@ export const Users = () => {
     async function Userfetch() {
         try {
             setLoading(true);
-            const data = (await axios.get("/api/users/getallusers")).data;
+            const data = (await axios.get(`${BASE_URL}/users/getallusers`)).data;
             setUsers(data);
             setLoading(false);
             setError(false);
@@ -455,12 +477,12 @@ export const Users = () => {
                         <tbody>
                             {users &&
                                 users.map((user) => (
-                                    <tr key={user._id}>
-                                        <td>{user._id}</td>
-                                        <td>{user.name}</td>
-                                        <td>{user.email}</td>
-                                        <td>{user.isAdmin ? "YES" : "NO"}</td>
-                                        <td><button className='a_room_btn' onClick={() => handleShowDelete(user._id)}>Delete</button></td>
+                                    <tr key={user?._id}>
+                                        <td>{user?._id}</td>
+                                        <td>{user?.name}</td>
+                                        <td>{user?.email}</td>
+                                        <td>{user?.isAdmin ? "YES" : "NO"}</td>
+                                        <td><button className='a_room_btn' onClick={() => handleShowDelete(user?._id)}>Delete</button></td>
                                     </tr>
                                 ))
                             }
@@ -489,7 +511,7 @@ export const Users = () => {
                     </div>
                 </>)}
             </div>
-            {error && users.length == 0 && (<Failure message={"Sorry , we are unable to fetch users at this time."} />)}
+            {error && (<Failure message={"Sorry , we are unable to fetch users at this time."} />)}
         </div>
     )
 }
@@ -502,23 +524,25 @@ export const AddRoom = () => {
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [rentperday, rentPerDay] = useState("");
-    const [maxcount, setMaxCount] = useState();
-    const [phonenumber, setPhoneNumber] = useState();
-    const [type, setType] = useState();
+    const [rentperday, setRentPerDay] = useState("");
+    const [maxcount, setMaxCount] = useState("");
+    const [phonenumber, setPhoneNumber] = useState("");
+    const [type, setType] = useState("");
     const [imageUrl1, setImageUrl1] = useState("");
     const [imageUrl2, setImageUrl2] = useState("");
     const [imageUrl3, setImageUrl3] = useState("");
+    const [latitude, setLatitude] = useState(null);
+    const [longitude, setLongitude] = useState(null);
 
     const [features, setFeatures] = useState({
         "Wifi": false,
         "Ac": false,
         "Tv": false,
         "Parking": false,
-        "Lake View" : false,
+        "Lake View": false,
         "Balcony": false,
-        "Safe Deposit Box" : false,
-        "Work Desk" : false
+        "Safe Deposit Box": false,
+        "Work Desk": false
     });
 
     const handleFeatureChange = (event) => {
@@ -529,7 +553,11 @@ export const AddRoom = () => {
         }));
     };
 
-    async function addRoom() {
+    const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+    async function addRoom(e) {
+        e.preventDefault();
+
         const newRoom = {
             name,
             description,
@@ -538,25 +566,43 @@ export const AddRoom = () => {
             phonenumber,
             type,
             imageurls: [imageUrl1, imageUrl2, imageUrl3],
-            features
+            features,
+            location: {
+                "lat": parseFloat(latitude),
+                "lng": parseFloat(longitude)
+            }
         }
 
         try {
             setLoading(true);
-            const { data } = await axios.post('api/rooms/addroom', newRoom);
+            const { data } = await axios.post(`${BASE_URL}/rooms/addroom`, newRoom);
             setLoading(false);
             setError(false);
 
             if (data) {
                 Swal.fire('Success!', 'Room added successfully', 'success');
+                setName("");
+                setDescription("");
+                setRentPerDay("");
+                setMaxCount("");
+                setPhoneNumber("");
+                setType("");
+                setImageUrl1("");
+                setImageUrl2("");
+                setImageUrl3("");
+                setFeatures({});
+                setLatitude(null);
+                setLongitude(null);
             }
             else {
                 Swal.fire('Oops', 'Delete Failed!', 'error');
+                setLoading(false);
             }
         } catch (error) {
             console.log(error);
             setError(true);
             Swal.fire("Error", "Failed to add room", "error");
+            setLoading(false);
         }
     }
 
@@ -565,37 +611,41 @@ export const AddRoom = () => {
             <h3>Add Room</h3>
             {loading && (<Loader />)}
 
-            <div className='leftinput'>
-                <input type="text" placeholder="Room Name" value={name} onChange={(e) => setName(e.target.value)} />
-                <input type="text" placeholder="Rent Per Day" value={rentperday} onChange={(e) => rentPerDay(e.target.value)} />
-                <input type="text" placeholder="Max Count" value={maxcount} onChange={(e) => setMaxCount(e.target.value)} />
-                <input type="text" placeholder="Room Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-                <input type="text" placeholder="Phone Number" value={phonenumber} onChange={(e) => setPhoneNumber(e.target.value)} />
-                <input type="text" placeholder="Type" value={type} onChange={(e) => setType(e.target.value)} />
-            </div>
-            <div className='rightinput'>
-                <input type="text" placeholder="Image URL1" value={imageUrl1} onChange={(e) => setImageUrl1(e.target.value)} />
-                <input type="text" placeholder="Image URL2" value={imageUrl2} onChange={(e) => setImageUrl2(e.target.value)} />
-                <input type="text" placeholder="Image URL3" value={imageUrl3} onChange={(e) => setImageUrl3(e.target.value)} />
+            <form onSubmit={addRoom} className='addroomcont'>
 
-                <div className='addroomfeatures'>
-                    <label><input type="checkbox" name="Wifi" checked={features.Wifi} onChange={handleFeatureChange} /> Wifi</label>
-                    <label><input type="checkbox" name="Ac" checked={features.Ac} onChange={handleFeatureChange} /> AC</label>
-                    <label><input type="checkbox" name="Tv" checked={features.Tv} onChange={handleFeatureChange} /> TV</label>
-                    <label><input type="checkbox" name="Parking" checked={features.Parking} onChange={handleFeatureChange} /> Parking</label>
-                    <label><input type="checkbox" name="Balcony" checked={features.Balcony} onChange={handleFeatureChange} /> Balcony</label>
-                    <label><input type="checkbox" name="Lake View" checked={features["Lake View"]} onChange={handleFeatureChange} /> Lake View</label>
-                    <label><input type="checkbox" name="Safe Deposit Box" checked={features["Safe Deposit Box"]} onChange={handleFeatureChange} /> Safe Deposit Box</label>
-                    <label><input type="checkbox" name="Work Desk" checked={features["Work Desk"]} onChange={handleFeatureChange} /> Work Desk</label>
+                <div className='leftinput'>
+                    <input type="text" placeholder="Room Name" value={name} onChange={(e) => setName(e.target.value)} required />
+                    <input type="text" placeholder="Rent Per Day" value={rentperday} onChange={(e) => setRentPerDay(e.target.value)} required />
+                    <input type="text" placeholder="Max Count" value={maxcount} onChange={(e) => setMaxCount(e.target.value)} required />
+                    <input type="text" placeholder="Room Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
+                    <input type="text" placeholder="Phone Number" value={phonenumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
+                    <input type="text" placeholder="Type" value={type} onChange={(e) => setType(e.target.value)} required />
                 </div>
+                <div className='rightinput'>
+                    <input type="text" placeholder="Image URL1" value={imageUrl1} onChange={(e) => setImageUrl1(e.target.value)} required />
+                    <input type="text" placeholder="Image URL2" value={imageUrl2} onChange={(e) => setImageUrl2(e.target.value)} required />
+                    <input type="text" placeholder="Image URL3" value={imageUrl3} onChange={(e) => setImageUrl3(e.target.value)} required />
+                    <input type="text" name="latitude" placeholder='Latitude' value={latitude} onChange={(e) => setLatitude(e.target.value)} required />
+                    <input type="text" name="longitude" placeholder='Longitude' value={longitude} onChange={(e) => setLongitude(e.target.value)} required />
 
-                <div className='addroombtn'>
-                    <button onClick={addRoom} className='a_room_btn'>Submit</button>
+                    <div className='addroomfeatures'>
+                        <label><input type="checkbox" name="Wifi" checked={features.Wifi} onChange={handleFeatureChange} /> Wifi</label>
+                        <label><input type="checkbox" name="Ac" checked={features.Ac} onChange={handleFeatureChange} /> AC</label>
+                        <label><input type="checkbox" name="Tv" checked={features.Tv} onChange={handleFeatureChange} /> TV</label>
+                        <label><input type="checkbox" name="Parking" checked={features.Parking} onChange={handleFeatureChange} /> Parking</label>
+                        <label><input type="checkbox" name="Balcony" checked={features.Balcony} onChange={handleFeatureChange} /> Balcony</label>
+                        <label><input type="checkbox" name="Lake View" checked={features["Lake View"]} onChange={handleFeatureChange} /> Lake View</label>
+                        <label><input type="checkbox" name="Safe Deposit Box" checked={features["Safe Deposit Box"]} onChange={handleFeatureChange} /> Safe Deposit Box</label>
+                        <label><input type="checkbox" name="Work Desk" checked={features["Work Desk"]} onChange={handleFeatureChange} /> Work Desk</label>
+                    </div>
+
+                    <div className='addroombtn'>
+                        <button type='submit' className='a_room_btn'>Submit</button>
+                    </div>
                 </div>
-            </div>
-
+            </form>
             {error && (<Failure message={"Sorry , we are unable to add rooms at this time."} />)}
-        </div>
+        </div >
     )
 }
 

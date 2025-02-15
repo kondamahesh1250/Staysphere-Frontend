@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loader from '../Components/Loader';
 import { Failure } from '../Components/Failure';
@@ -10,10 +10,11 @@ import Swal from 'sweetalert2';
 
 const Bookingscreen = () => {
 
+  const navigate = useNavigate();
   const { id, fromDate, toDate } = useParams();
 
 
-  const [user,setUser] = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [rooms, setRooms] = useState(null);
@@ -27,25 +28,25 @@ const Bookingscreen = () => {
 
 
   useEffect(() => {
-  async function fetchUser() {
-    const token = localStorage.getItem("token");
-    if(!token){
-      return;
-    }
-    const response = await axios.get("/api/users/verifyuser",{
-      headers: {
-        "Authorization": `Bearer ${token}`,
+    async function fetchUser() {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        return;
+      }
+      const response = await axios.get("/users/verifyuser", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
         }
-    });
-    setUser(response?.data);    
-  }
+      });
+      setUser(response?.data);
+    }
 
-  fetchUser();
+    fetchUser();
 
     const fetchRooms = async () => {
       try {
         setLoading(true);
-        const data = (await axios.post('/api/rooms/getroombyid', { roomid: id })).data;
+        const data = (await axios.post('/rooms/getroombyid', { roomid: id })).data;
         setTotalAmount(totalDays * data.rentperday);
         setRooms(data);
         setLoading(false);
@@ -59,9 +60,10 @@ const Bookingscreen = () => {
     fetchRooms();
   }, []);
 
-
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  
   async function onToken(token) {
-   
+
     const bookingDetails = {
       rooms,
       userid: user?._id,
@@ -74,14 +76,16 @@ const Bookingscreen = () => {
 
     try {
       setLoading(true);
-      const result = await axios.post('/api/bookings/bookroom', bookingDetails);
+      const { data } = await axios.post(`${BASE_URL}/bookings/bookroom`, bookingDetails);
       setLoading(false);
-      Swal.fire('Congratulations','Your Room Booked Successfully','success').then((result)=>{
-        window.location.href="/homescreen";
-      })
+      if (data) {
+        Swal.fire('Congratulations', 'Your Room Booked Successfully', 'success');
+        navigate("/homescreen");
+      }
     } catch (error) {
       setLoading(false);
-      Swal.fire('Oops','Something went wrong','error');
+      setError(true);
+      Swal.fire('Oops', 'Something went wrong', 'error');
     }
   }
 
@@ -122,15 +126,14 @@ const Bookingscreen = () => {
                   amount={totalAmount * 100}
                   token={onToken}
                   currency='INR'
-                  stripeKey="pk_test_51QjGigGarWj667uiJMV1ge17ogXlCskZh4bIpKvYSoubKoxgkpDaYghxbCg3YKDo6qlBG09LdIm097BkrRpzhCAY00hnCL9J3F"
-                >
+                  stripeKey={process.env.REACT_APP_STRIPE_PUBLIC_KEY}>
                   <button >Pay Now</button>
                 </StripeCheckout>
 
               </div>
             </div>
           </div>
-        </div>) : (<Failure message={"Sorry , Please try again"} />)
+        </div>) : (error && <Failure message={"Sorry , Please try again"} />)
       }
     </div>
   )
