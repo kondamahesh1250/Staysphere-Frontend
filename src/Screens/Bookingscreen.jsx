@@ -26,6 +26,7 @@ const Bookingscreen = () => {
   const totalDays = moment.duration(toEndDate.diff(fromStartDate)).asDays() + 1;
 
 
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
     async function fetchUser() {
@@ -46,7 +47,7 @@ const Bookingscreen = () => {
     const fetchRooms = async () => {
       try {
         setLoading(true);
-        const data = (await axios.post('/rooms/getroombyid', { roomid: id })).data;
+        const data = (await axios.post(`${BASE_URL}/rooms/getroombyid`, { roomid: id })).data;
         setTotalAmount(totalDays * data.rentperday);
         setRooms(data);
         setLoading(false);
@@ -60,7 +61,6 @@ const Bookingscreen = () => {
     fetchRooms();
   }, []);
 
-  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
   
   async function onToken(token) {
 
