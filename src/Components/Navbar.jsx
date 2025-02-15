@@ -29,6 +29,8 @@ const Navbar = () => {
 
     if (token) {
       fetchUser(token);
+    }else{
+      navigate("/login")
     }
 
   }, [token, navigate]); // Run on token change
@@ -83,8 +85,8 @@ const Navbar = () => {
     setIsDropdownOpen(false); // Close the dropdown
     setIsMenuOpen(false); // Close the hamburger menu
     setUser(null);
-    navigate("/login");
     toast.success("Logout Successful!", { autoClose: 2000 });
+    navigate("/login");
   };
 
   // Define paths where navbar items should be hidden
@@ -194,7 +196,7 @@ const Navbar = () => {
                     Admin
                   </Link>
                 )}
-                <Link className="dropdown-item text-dark" onClick={logout}><i class="fa-solid fa-right-from-bracket"></i>
+                <Link className="dropdown-item text-dark" onClick={()=>logout()}><i class="fa-solid fa-right-from-bracket"></i>
                   Logout
                 </Link>
               </div>

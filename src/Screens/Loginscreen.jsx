@@ -41,12 +41,10 @@ const Loginscreen = () => {
 
             if (data.token) {
                 localStorage.setItem("token", data.token);
-
-                toast.success("Login Successful!", {
-                    autoClose: 2000,
-                    onClose: () => fetchUserRole(data.token), // Redirect after toast closes
-                });
+                fetchUserRole(data.token); // Call immediately
+                // toast.success("Login Successful!", { autoClose: 2000 });
             }
+            
 
 
         } catch (error) {
