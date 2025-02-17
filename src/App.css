@@ -1215,7 +1215,7 @@
         width: 100%;
         min-width: 50vw;
         margin: 0 auto;
-        height: 55vh;
+        max-height: 45vh;
     }
 
     .bookimage img{
@@ -1257,7 +1257,7 @@
     .bookimage {
         width: 80%;
         min-width: 40vw;
-        height: 55vh;
+        max-height: 55vh;
         margin: 0 auto;
     }
 
@@ -1282,7 +1282,7 @@
     .bookimage {
         width: 80%;
         width: 50vw;
-        height: 55vh;
+        max-height: 55vh;
     }
 
     .bookimage img{
@@ -1306,7 +1306,7 @@
     .bookimage {
         width: 80%;
         min-width: 40vw;
-        height: 55vh;
+        max-height: 55vh;
     }
 
     .bookimage img{
