@@ -946,7 +946,7 @@
     flex-direction: column;
     padding: 20px 20px;
     width: 45%;
-    height: 65vh;
+    height: 465px;
     border: 1px solid #ddd;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -957,7 +957,7 @@
 
 .roomright {
     width: 40%;
-    height: 65vh;
+    height: 465px;
     border: 1px solid;
     padding: 20px;
     border-radius: 5px;
