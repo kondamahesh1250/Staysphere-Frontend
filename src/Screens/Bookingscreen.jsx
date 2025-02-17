@@ -61,7 +61,7 @@ const Bookingscreen = () => {
     fetchRooms();
   }, []);
 
-  
+
   async function onToken(token) {
 
     const bookingDetails = {
@@ -97,7 +97,7 @@ const Bookingscreen = () => {
           <div className='bookcontainer'>
             <div className='bookimage'>
               <h1>{rooms.name}</h1>
-              <img src={rooms.imageurls[0]} alt="" className='bigimg' />
+              <img src={rooms.imageurls[0]} alt="" />
             </div>
             <div className='bookdetails'>
               <div>

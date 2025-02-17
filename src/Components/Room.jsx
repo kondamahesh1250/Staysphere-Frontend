@@ -1,37 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import "../App.css";
 
-const RoomCard = ({ room, fromDate, toDate }) => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const element = document.getElementById(`room-${room._id}`);
-      if (element) {
-        const rect = element.getBoundingClientRect();
-        if (rect.top < window.innerHeight * 0.85) {
-          setIsVisible(true);
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Check on mount
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [room._id]);
-
+const Room = ({ room, fromDate, toDate }) => {
   return (
     <motion.div
-      id={`room-${room._id}`}
       className="roomcontainer"
       initial={{ opacity: 0, y: 50 }}
-      animate={isVisible ? { opacity: 1, y: 0 } : {}}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -50 }} // Smooth exit animation when filtering
       transition={{ duration: 0.8, ease: "easeOut" }}
+      layout // Ensures smooth layout transition when list updates
     >
       <div className="roomimage">
-        <img src={room.imageurls[0]} alt="" />
+        <img src={room.imageurls[0]} alt="" loading="lazy" />
       </div>
       <div className="roominfo">
         <h1>{room.name}</h1>
@@ -60,4 +43,4 @@ const RoomCard = ({ room, fromDate, toDate }) => {
   );
 };
 
-export default RoomCard;
+export default Room;

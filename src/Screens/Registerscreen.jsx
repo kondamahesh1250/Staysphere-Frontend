@@ -3,8 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from 'react-toastify';
 import Loader from "../Components/Loader";
-import GoogleLogin from "../Screens/GoogleLogin"; 
-import "../App.css";  
+import GoogleLogin from "../Screens/GoogleLogin";
+import "../App.css";
 
 
 const Registerscreen = () => {
@@ -70,12 +70,28 @@ const Registerscreen = () => {
             {loading && (<Loader />)}
             <div className="registercontainer">
                 <div className='registerhome'>
-                    <Link to={"/"} ><button><i class="fa-solid fa-house"></i> Home</button></Link>
+                    <Link to={"/"} ><button className="homebtn"><i class="fa-solid fa-house"></i> Home</button></Link>
                 </div>
                 <div>
                     <form onSubmit={handleSubmit} className="register-form">
                         <h1>Register Screen</h1>
-                        <div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="name" name="name" value={formData.name} onChange={handleChange} placeholder="name@example.com" />
+                            <label for="name">Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="name@example.com" />
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
+                            <label for="password">Password</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="password" name="c_password" value={formData.c_password} onChange={handleChange} placeholder="Password" />
+                            <label for="password">Confirm Password</label>
+                        </div>
+                        {/* <div>
                             <label htmlFor="name">Name</label>
                             <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} />
                         </div>
@@ -90,7 +106,7 @@ const Registerscreen = () => {
                         <div>
                             <label htmlFor="c_password">Confirm Password</label>
                             <input type="password" name="c_password" id="c_password" value={formData.c_password} onChange={handleChange} />
-                        </div>
+                        </div> */}
                         <button type="submit" className="registerbtn">Register</button>
                     </form>
                 </div>

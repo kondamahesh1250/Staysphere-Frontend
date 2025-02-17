@@ -20,7 +20,7 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const isGuest = JSON.parse(localStorage.getItem("guestUser"));
+    const isGuest = (localStorage.getItem("guestUser"));
     if (isGuest) {
       setUser(isGuest);
       return;
@@ -29,7 +29,7 @@ const Navbar = () => {
     if (token) {
       fetchUser(token);
     }
-  }, [token]);
+  }, [token,navigate]);
   
 
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;

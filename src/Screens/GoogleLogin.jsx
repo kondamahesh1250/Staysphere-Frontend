@@ -54,9 +54,19 @@ const GoogleLogin = ({ name }) => {
         }
     }
 
+    const styling = {
+        width: "100%",
+        backgroundColor:"white",
+        padding:"10px",
+        color:"black",
+        border:"0px",
+        borderRadius:"5px",
+        marginBottom:"20px"
+    }
+
     return (
         <div>
-            <button style={{ backgroundColor: "white", color: "black", borderRadius: "5px" }} onClick={() => login()}>{name}
+            <button style={styling} onClick={() => login()}>{name}
                 <img src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000"
                     alt="Google Logo"
                     width="20"

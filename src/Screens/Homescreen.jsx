@@ -6,6 +6,7 @@ import Room from '../Components/Room';
 import Loader from '../Components/Loader';
 import { Failure } from '../Components/Failure';
 import { Link } from 'react-router-dom';
+import { AnimatePresence } from "framer-motion";
 import "../App.css";
 
 const { RangePicker } = DatePicker;
@@ -129,11 +130,13 @@ const Homescreen = () => {
         {loading ? (
           <Loader />
         ) : (rooms.length > 0 ? (
-          rooms.map((room) => {
-            return <div>
-              <Room room={room} fromDate={fromDate} toDate={toDate} />
-            </div>
-          })
+          <div className="room-list">
+            <AnimatePresence>
+              {rooms.map((room) => (
+                <Room key={room._id} room={room} fromDate={fromDate} toDate={toDate} />
+              ))}
+            </AnimatePresence>
+          </div>
         ) :
           <>
             {error &&

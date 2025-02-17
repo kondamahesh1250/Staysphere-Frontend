@@ -168,7 +168,7 @@
         flex-direction: column;
         align-items: center;
         position: absolute;
-        top: 70px;
+        top: 60px;
         right: 0;
         background-color: #333;
         width: 100%;
@@ -238,7 +238,7 @@
 /* Large Devices (Laptops and Desktops) */
 @media screen and (min-width: 901px) and (max-width: 1200px) {
 
-    
+
     .navbar-container {
         padding: 1rem 3rem;
     }
@@ -340,6 +340,8 @@
 .landingbtn {
     background-color: rgb(248, 240, 240);
     color: black;
+    padding: 10px;
+    border: 0;
     border-radius: 5px;
 }
 
@@ -502,9 +504,9 @@
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
     .service-list {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .section-title {
@@ -512,6 +514,17 @@
     }
 }
 
+@media screen and (min-width:769px) and (max-width: 1024px) {
+    .service-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (min-width:1025px) and (max-width: 1440px) {
+    .service-list {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
 
 
 /* Styles for the contact section */
@@ -542,6 +555,7 @@
 }
 
 .contact-methods {
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 30px;
@@ -550,15 +564,16 @@
 .contact-item {
     background-color: #f7f7f7;
     border-radius: 8px;
-    padding: 20px;
+    max-width: fit-content;
+    padding: 5px;
     text-align: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .contact-item .icon {
-    font-size: 36px;
+    font-size: 26px;
     color: #3498db;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 .contact-item h3 {
@@ -589,14 +604,44 @@
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media screen and (min-width:500) and (max-width: 768px) {
     .contact-methods {
-        grid-template-columns: 1fr;
+        width: 100%;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .contact-item {
         width: 100%;
         margin-bottom: 20px;
+        max-height: 45vh;
+    }
+}
+
+@media screen and (min-width:769px) and (max-width: 1024px) {
+    .contact-methods {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .contact-item {
+        width: 100%;
+        margin-bottom: 20px;
+        max-height: 45vh;
+    }
+}
+
+@media screen and (min-width:1025px) and (max-width: 1440px) {
+    .contact-methods {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .contact-item {
+        width: 100%;
+        margin-bottom: 20px;
+        max-height: 45vh;
     }
 }
 
@@ -681,7 +726,7 @@
 @media screen and (max-width: 600px) {
 
     .filterhome {
-        text-align: center;
+        text-align: end;
         margin-bottom: 20px;
     }
 
@@ -689,7 +734,6 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        align-items: stretch;
         gap: 10px;
         padding: 10px;
     }
@@ -799,13 +843,20 @@
 
 @media screen and (max-width: 600px) {
     .roomcontainer {
+        width: 80vw;
         flex-direction: column;
+        justify-content: center;
         align-items: center;
         padding: 15px;
     }
 
+    .roomimage {
+        width: 100%;
+        text-align: center;
+    }
+
     .roomimage img {
-        max-width: 100%;
+        max-width: 80%;
     }
 
     .roominfo {
@@ -878,6 +929,7 @@
 }
 
 .caroinfo {
+    width: 100%;
     padding: 30px 20px;
 }
 
@@ -891,10 +943,9 @@
 .roomleft {
     display: flex;
     flex-direction: column;
-    padding: 20px;
-    padding: auto;
+    padding: 20px 20px;
     width: 45%;
-    min-height: 60vh;
+    min-height: 50vh;
     border: 1px solid #ddd;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -935,10 +986,11 @@
 @media screen and (max-width: 600px) {
     .caroimg {
         width: 100%;
+        height: 350px;
     }
 
     .bigimg {
-        height: auto;
+        height: 350px;
     }
 
     .roomdetails {
@@ -971,7 +1023,13 @@
 
 @media screen and (min-width: 601px) and (max-width: 900px) {
     .caroimg {
-        width: 80%;
+        width: 100%;
+        height: 350px;
+    }
+
+    .bigimg {
+        width: auto;
+        height: 350px;
     }
 
     .roomdetails {
@@ -1004,12 +1062,19 @@
 
 @media screen and (min-width: 901px) and (max-width: 1200px) {
     .caroimg {
-        width: 600px;
+        width: 100%;
+        height: 350px;
     }
+
+    .bigimg {
+        width: auto;
+        height: 350px;
+    }
+
 
     .roomdetails {
         display: flex;
-        flex-direction: column;
+        /* flex-direction: column; */
 
     }
 
@@ -1017,8 +1082,7 @@
         display: flex;
         flex-direction: column;
         padding: 20px;
-        padding: auto;
-        width: auto;
+        width: 50%;
         height: auto;
         border: 1px solid;
         border: 1px solid #ddd;
@@ -1026,8 +1090,41 @@
     }
 
     .roomright {
-        width: auto;
+        width: 50%;
         height: auto;
+        border: 1px solid;
+        padding: 20px;
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+}
+
+@media screen and (min-width: 1201px) and (max-width: 1400px) {
+
+    .caroimg {
+        width: 100%;
+        height: 350px;
+    }
+
+    .bigimg {
+        width: auto;
+        height: 350px;
+    }
+
+    .roomleft {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        width: 45%;
+        height: 55vh;
+        border: 1px solid;
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .roomright {
+        width: 45%;
+        min-height: 10vh;
         border: 1px solid;
         padding: 20px;
         border: 1px solid #ddd;
@@ -1051,12 +1148,11 @@
 
 .bookimage {
     width: 100%;
-    max-width: 600px;
+    max-width: 550px;
     border: 1px solid #ccc;
     height: 60vh;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    padding: 15px;
     text-align: center;
 }
 
@@ -1078,7 +1174,7 @@
     border: 1px solid #ccc;
     width: 100%;
     max-width: 500px;
-    height: 65vh;
+    height: 55vh;
     text-align: left;
     padding: 20px;
     border-radius: 10px;
@@ -1111,18 +1207,19 @@
 @media screen and (max-width: 600px) {
     .bookcontainer {
         flex-direction: column;
-        gap: 20px;
+        gap: 80px;
+        padding-top: 50px;
     }
 
     .bookimage {
-        width: 90%;
+        width: 100%;
         margin: 0 auto;
     }
 
     .bookdetails {
         width: 90%;
         margin: 0 auto;
-        height: 70vh;
+        height: auto;
 
     }
 
@@ -1147,7 +1244,7 @@
 @media screen and (min-width: 601px) and (max-width: 900px) {
     .bookcontainer {
         flex-direction: column;
-        gap: 30px;
+        gap: 50px;
     }
 
     .bookimage {
@@ -1158,7 +1255,7 @@
     .bookdetails {
         width: 80%;
         margin: 0 auto;
-        height: 80vh;
+        height: auto;
 
     }
 }
@@ -1176,7 +1273,7 @@
 
     .bookdetails {
         width: 30%;
-    height: 80vh;
+        height: auto;
 
     }
 }
@@ -1188,10 +1285,10 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100vh;
+    height: auto;
     justify-content: center;
     align-items: center;
-    gap: 50px;
+    gap: 60px;
     padding: 20px;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
@@ -1200,19 +1297,24 @@
 
 .registerhome {
     width: 100%;
+    margin-top: 10px;
     text-align: end;
 }
 
-.registerhome button {
-    background-color: white;
+.homebtn {
+    background-color: #f9f9f9;
     color: #000;
+    border: 0;
 }
 
 .register-form {
+    width: 100%;
+    min-width: 30vw;
+    height: auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 50px;
+    padding: 40px 60px;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
@@ -1220,13 +1322,6 @@
 
 .register-form>h1 {
     font-size: 30px;
-}
-
-.register-form>div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
 }
 
 
@@ -1241,8 +1336,6 @@ label {
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-    flex: 2;
-    padding: 10px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -1257,7 +1350,9 @@ input[type="password"]:focus {
     outline: none;
 }
 
-button {
+.registerbtn {
+    background-color: black;
+    color: white;
     padding: 10px 15px;
     background-color: black;
     color: white;
@@ -1269,20 +1364,15 @@ button {
     transition: background-color 0.3s ease;
 }
 
-.registerbtn{
-    background-color: black;
-    color: white;
-}
-
-button:hover {
+.registerbtn:hover {
     background-color: #54575a;
 }
 
 @media (max-width: 768px) {
     .registercontainer {
         padding: 15px;
-        height: 120vh;
-        gap: 20px;
+        height: auto;
+        gap: 40px;
     }
 
     .registerhome {
@@ -1311,11 +1401,20 @@ button:hover {
     .registercontainer {
         gap: 15px;
     }
+
+    .register-form {
+        min-width: 45vw;
+    }
+
 }
 
 @media screen and (min-width: 901px) and (max-width: 1200px) {
     .registercontainer {
         gap: 20px;
+    }
+
+    .register-form {
+        min-width: 40vw;
     }
 }
 
@@ -1327,7 +1426,7 @@ button:hover {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    gap: 45px;
+    gap: 60px;
     justify-content: center;
     align-items: center;
     padding: 0px 20px;
@@ -1342,11 +1441,13 @@ button:hover {
 }
 
 .loginhome button {
-    background-color: white;
+    background-color: #f9f9f9;
     color: #000;
+    border: 0;
 }
 
 .login-form {
+    min-width: 30vw;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -1367,36 +1468,6 @@ button:hover {
     color: #333;
 }
 
-.form-group {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-.form-label {
-    width: 30%;
-    font-weight: bold;
-    font-size: 14px;
-    color: #555;
-    text-align: left;
-}
-
-.form-input {
-    width: 70%;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
-}
-
-.form-input:focus {
-    border-color: #007bff;
-    outline: none;
-}
-
 .form-button {
     padding: 10px;
     font-size: 16px;
@@ -1414,25 +1485,22 @@ button:hover {
 }
 
 @media (max-width: 768px) {
+
     .loginhome {
-        padding-top: 60px;
         width: 100%;
         text-align: end;
     }
 
-    .form-group {
-        flex-direction: column;
-        align-items: flex-start;
+    .login-form {
+        min-width: 50vw;
     }
 
-    .form-label,
-    .form-input {
-        width: 100%;
-    }
 
     .login-container {
+        width: 100%;
+        height: auto;
         padding: 15px;
-        gap: 30px;
+        gap: 60px;
     }
 }
 
@@ -1440,11 +1508,34 @@ button:hover {
     .login-container {
         gap: 35px;
     }
+
+    .login-form {
+        min-width: 50vw;
+    }
+
+    .loginhome {
+        width: 100%;
+        text-align: end;
+    }
 }
 
 @media screen and (min-width: 901px) and (max-width: 1200px) {
     .login-container {
         gap: 40px;
+    }
+
+    .login-form {
+        min-width: 45vw;
+    }
+}
+
+@media screen and (min-width: 1201px) and (max-width: 1440px) {
+    .login-container {
+        gap: 40px;
+    }
+
+    .login-form {
+        min-width: 40vw;
     }
 }
 
@@ -1599,7 +1690,7 @@ button:hover {
     align-items: center;
 }
 
-.addroomcont{
+.addroomcont {
     display: flex;
     flex-direction: column;
     gap: 20px;
