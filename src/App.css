@@ -946,7 +946,7 @@
     flex-direction: column;
     padding: 20px 20px;
     width: 45%;
-    height: 465px;
+    height: 65vh;
     border: 1px solid #ddd;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -957,7 +957,7 @@
 
 .roomright {
     width: 40%;
-    height: 465px;
+    height: 65vh;
     border: 1px solid;
     padding: 20px;
     border-radius: 5px;
@@ -1084,7 +1084,8 @@
         flex-direction: column;
         padding: 20px;
         width: 50%;
-        height: 70vh;
+        /* height: 70vh; */
+        height: auto;
         border: 1px solid;
         border: 1px solid #ddd;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -1092,7 +1093,8 @@
 
     .roomright {
         width: 50%;
-        height: 70vh;
+        /* height: 70vh; */
+        height: auto;
         border: 1px solid;
         padding: 20px;
         border: 1px solid #ddd;
@@ -1118,6 +1120,8 @@
         padding: 20px;
         width: 45%;
         height: 65vh;
+        height: auto;
+
         border: 1px solid;
         border: 1px solid #ddd;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -1126,6 +1130,8 @@
     .roomright {
         width: 45%;
         height: 65vh;
+        height: auto;
+
         border: 1px solid;
         padding: 20px;
         border: 1px solid #ddd;
