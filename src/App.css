@@ -900,9 +900,10 @@
     }
 }
 
-@media screen and (min-width: 901px) {
+@media screen and (min-width: 901px) and (max-width: 1200px) {
     .roomcontainer {
         flex-direction: row;
+        width: 70vw;
     }
 
     .roominfo {
@@ -1280,11 +1281,12 @@
     .bookimage {
         width: 80%;
         width: 50vw;
-        max-height: 55vh;
+        height: auto;
     }
 
     .bookimage img{
         width: 90%;
+        padding-bottom: 20px;
     }
 
     .bookdetails {
@@ -1304,7 +1306,7 @@
     .bookimage {
         width: 80%;
         min-width: 40vw;
-        max-height: 55vh;
+        height: 50vh;
     }
 
     .bookimage img{
