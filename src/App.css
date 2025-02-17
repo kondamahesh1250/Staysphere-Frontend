@@ -1273,9 +1273,12 @@
 
 @media screen and (min-width: 901px) and (max-width: 1200px) {
     .bookcontainer {
+        margin-top: 50px;
         flex-direction: row;
+        align-items: flex-start;
         gap: 50px;
         padding: 30px;
+        height: auto;
     }
 
     .bookimage {
