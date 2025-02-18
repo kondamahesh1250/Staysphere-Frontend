@@ -68,10 +68,10 @@ const Registerscreen = () => {
     return (
         <>
             {loading && (<Loader />)}
-            <div className="registercontainer">
                 <div className='registerhome'>
                     <Link to={"/"} ><button className="homebtn"><i class="fa-solid fa-house"></i> Home</button></Link>
                 </div>
+            <div className="registercontainer">
                 <div>
                     <form onSubmit={handleSubmit} className="register-form">
                         <h1>Register Screen</h1>

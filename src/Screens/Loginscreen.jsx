@@ -79,9 +79,9 @@ const Loginscreen = () => {
                 const redirectPath = sessionStorage.getItem("redirectAfterLogin");
                 if (redirectPath) {
                     sessionStorage.removeItem("redirectAfterLogin"); // Clear it after using
-                    navigate(redirectPath);
+                    return navigate(redirectPath, { replace: true });
                 } else {
-                    navigate("/homescreen"); // Default fallback
+                    navigate("/homescreen");
                 }
 
                 // Prevent navigating back to login page
@@ -105,6 +105,15 @@ const Loginscreen = () => {
 
         localStorage.setItem("guestUser", JSON.stringify(guestLogin));
         window.dispatchEvent(new Event("authChange"));
+
+        const redirectPath = sessionStorage.getItem("redirectAfterLogin");
+        if (redirectPath) {
+            sessionStorage.removeItem("redirectAfterLogin"); // Clear it after using
+            return navigate(redirectPath, { replace: true });
+        } else {
+            navigate("/homescreen"); // Default fallback
+        }
+
         toast.success(" Welcome, Guest User!", { autoClose: 2000 });
         navigate("/homescreen", { replace: true });
 
@@ -113,10 +122,10 @@ const Loginscreen = () => {
     return (
         <>
             {loading && <Loader />}
-            <div className="login-container">
                 <div className='loginhome'>
                     <Link to={"/"}><button><i className="fa-solid fa-house"></i> Home</button></Link>
                 </div>
+            <div className="login-container">
                 <form onSubmit={handleSubmit} className="login-form">
                     <h1 className="form-title">Login Screen</h1>
                     <div class="form-floating mb-3">

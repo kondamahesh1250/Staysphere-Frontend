@@ -9,17 +9,14 @@ const Room = ({ room, fromDate, toDate }) => {
 
   const handleUser = () => {
     const token = localStorage.getItem("token");
-    console.log("Token in localStorage: ", token); // Debugging log
-    
-    if (!token) {
-      console.log("No token found. Redirecting to login...");
-      // Store the intended URL before redirecting to login
+    const guestUser = localStorage.getItem("guestUser");
+   
+    if (!token && !guestUser) {
       sessionStorage.setItem("redirectAfterLogin", `/book/${room._id}/${fromDate}/${toDate}`);
       toast.warning("Not logged in. Please login to book a room.",{autoClose:1500});
-      navigate("/login"); // Redirect to login
+      navigate("/login"); 
     } else {
-      console.log("Token found. Proceeding with booking...");
-      navigate(`/book/${room._id}/${fromDate}/${toDate}`); // Proceed with booking
+      navigate(`/book/${room._id}/${fromDate}/${toDate}`);
     }
   };
    

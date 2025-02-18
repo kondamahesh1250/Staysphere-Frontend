@@ -31,6 +31,13 @@ const Bookingscreen = () => {
   useEffect(() => {
     async function fetchUser() {
       const token = localStorage.getItem("token");
+      const guestUser = JSON.parse(localStorage.getItem("guestUser"));
+
+      if(guestUser){
+        setUser(guestUser);
+        return;
+      }
+      
       if (!token) {
         return;
       }
