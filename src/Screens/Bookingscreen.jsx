@@ -50,7 +50,7 @@ const Bookingscreen = () => {
     }
 
     fetchUser();
-
+    
     const fetchRooms = async () => {
       try {
         setLoading(true);
