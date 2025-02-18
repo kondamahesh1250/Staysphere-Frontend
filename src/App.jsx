@@ -30,9 +30,16 @@ function App() {
 
     const logoutUser = () => {
       toast.warning("You have been logged out due to inactivity.", { autoClose: 2000 });
+    
       localStorage.removeItem("token");
+      
+      // Dispatch an event to notify other components
+      window.dispatchEvent(new Event("authChange"));
+    
       navigate("/login");
+      // window.location.reload(); // Only needed if Navbar still doesn't update
     };
+    
 
     // Check if the token is expired
     const checkTokenExpiry = () => {
@@ -52,8 +59,7 @@ function App() {
           }
         } catch (error) {
           console.error("Invalid token:", error);
-          localStorage.removeItem("token");
-            navigate("/login");
+          navigate("/login");
         }
       }
     };

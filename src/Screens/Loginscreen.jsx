@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Form from 'react-bootstrap/Form';
 import { toast } from 'react-toastify';
 import Loader from '../Components/Loader';
 import "../App.css"
@@ -23,7 +21,17 @@ const Loginscreen = () => {
             [name]: value,
         }));
     }
-console.log(formData)
+
+    // useEffect(() => {
+    //     const redirectPath = sessionStorage.getItem("redirectAfterLogin");
+    //     if (redirectPath) {
+    //       sessionStorage.removeItem("redirectAfterLogin"); // Clear it after using
+    //       navigate(redirectPath);
+    //     } else {
+    //       navigate("/homescreen"); // Default fallback
+    //     }
+    //   }, []);
+
     const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
     async function handleSubmit(e) {
@@ -44,7 +52,7 @@ console.log(formData)
             if (data.token) {
                 localStorage.setItem("token", data.token);
                 fetchUserRole(data.token); // Call immediately
-                toast.success("Login Successful!", { autoClose: 2000 });
+                toast.success("Login Successful!", { autoClose: 1500 });
             }
 
 
@@ -66,6 +74,15 @@ console.log(formData)
             if (userRole) {
                 setFormData({ email: "", password: "" });
                 navigate(userRole.isAdmin ? "/admin" : "/homescreen", { replace: true });
+                window.dispatchEvent(new Event("authChange")); // Notify Navbar
+
+                const redirectPath = sessionStorage.getItem("redirectAfterLogin");
+                if (redirectPath) {
+                    sessionStorage.removeItem("redirectAfterLogin"); // Clear it after using
+                    navigate(redirectPath);
+                } else {
+                    navigate("/homescreen"); // Default fallback
+                }
 
                 // Prevent navigating back to login page
                 window.history.pushState(null, "", window.location.href);
@@ -87,7 +104,10 @@ console.log(formData)
         }
 
         localStorage.setItem("guestUser", JSON.stringify(guestLogin));
+        window.dispatchEvent(new Event("authChange"));
+        toast.success(" Welcome, Guest User!", { autoClose: 2000 });
         navigate("/homescreen", { replace: true });
+
     }
 
     return (
@@ -100,12 +120,12 @@ console.log(formData)
                 <form onSubmit={handleSubmit} className="login-form">
                     <h1 className="form-title">Login Screen</h1>
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="name@example.com"/>
-                            <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="name@example.com" />
+                        <label for="email">Email address</label>
                     </div>
                     <div class="form-floating">
-                        <input type="password" class="form-control" id="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password"/>
-                            <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
+                        <label for="password">Password</label>
                     </div>
                     {/* <div className="form-group">
                         <label htmlFor="email" className="form-label">Email</label>

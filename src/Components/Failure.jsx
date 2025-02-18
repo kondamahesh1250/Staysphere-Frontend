@@ -12,7 +12,7 @@ export const Failure = ({ message }) => {
   }
   return (
     <div style={styling}>
-      <p style={{ fontSize: "30px" }}>{message}</p>
+      <p style={{ fontSize: "28px" }}>{message}</p>
     </div>
   )
 }

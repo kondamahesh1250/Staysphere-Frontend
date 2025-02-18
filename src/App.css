@@ -675,8 +675,7 @@
 }
 
 .filterhome a button:hover {
-    background-color: #f0f0f0;
-    color: #333;
+    color: #484646;
 }
 
 .filtercriteria {
@@ -1157,7 +1156,7 @@
     width: 100%;
     max-width: 550px;
     border: 1px solid #ccc;
-    height: 50vh;
+    height: 60vh;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     text-align: center;
@@ -1357,6 +1356,10 @@
     border: 0;
 }
 
+.homebtn:hover{
+    color: #484646;
+}
+
 .register-form {
     width: 100%;
     min-width: 30vw;
@@ -1494,6 +1497,10 @@ input[type="password"]:focus {
     background-color: #f9f9f9;
     color: #000;
     border: 0;
+}
+
+.loginhome button:hover{
+    color: #484646;
 }
 
 .login-form {

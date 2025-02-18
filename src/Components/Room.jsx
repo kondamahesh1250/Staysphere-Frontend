@@ -1,9 +1,28 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 import { motion } from "framer-motion";
 import "../App.css";
+import { toast } from "react-toastify";
 
 const Room = ({ room, fromDate, toDate }) => {
+  const navigate = useNavigate();
+
+  const handleUser = () => {
+    const token = localStorage.getItem("token");
+    console.log("Token in localStorage: ", token); // Debugging log
+    
+    if (!token) {
+      console.log("No token found. Redirecting to login...");
+      // Store the intended URL before redirecting to login
+      sessionStorage.setItem("redirectAfterLogin", `/book/${room._id}/${fromDate}/${toDate}`);
+      toast.warning("Not logged in. Please login to book a room.",{autoClose:1500});
+      navigate("/login"); // Redirect to login
+    } else {
+      console.log("Token found. Proceeding with booking...");
+      navigate(`/book/${room._id}/${fromDate}/${toDate}`); // Proceed with booking
+    }
+  };
+   
   return (
     <motion.div
       className="roomcontainer"
@@ -30,9 +49,9 @@ const Room = ({ room, fromDate, toDate }) => {
 
         <div className="btncontainer">
           {fromDate && toDate && (
-            <Link to={`/book/${room._id}/${fromDate}/${toDate}`}>
-              <button className="bookbtn">Book Now</button>
-            </Link>
+            // <Link to={`/book/${room._id}/${fromDate}/${toDate}`}>
+              <button className="bookbtn" onClick={handleUser}>Book Now</button>
+            /* </Link> */
           )}
           <Link to={`/viewroom/${room._id}`}>
             <button className="viewbtn">View Details</button>

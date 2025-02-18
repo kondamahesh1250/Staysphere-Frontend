@@ -217,6 +217,7 @@ export function MyBookings({ user }) {
             }
         } catch (error) {
             console.log(error);
+            setError(true)
             Swal.fire('Opps ', 'Something went wrong', 'error');
         }
 
@@ -251,7 +252,7 @@ export function MyBookings({ user }) {
                     </div>
                 ))
             ) : (
-                error && (<Failure />)
+               ( bookings.length===0 || error) && (<Failure message={error?"Something went wrong":"No bookings found"} />)
             )
             }
         </div>

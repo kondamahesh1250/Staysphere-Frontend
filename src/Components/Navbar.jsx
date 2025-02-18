@@ -8,8 +8,8 @@ import "../App.css"
 
 
 const Navbar = () => {
-  const token = localStorage.getItem("token")
-  const [user, setUser] = useState(null); // For user data
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Add a loading state
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -20,17 +20,32 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const isGuest = (localStorage.getItem("guestUser"));
-    if (isGuest) {
-      setUser(isGuest);
-      return;
-    }
-  
-    if (token) {
-      fetchUser(token);
-    }
-  }, [token,navigate]);
-  
+    const updateAuthState = () => {
+      const isGuest = JSON.parse(localStorage.getItem("guestUser"));
+      if (isGuest) {
+        setUser(isGuest);
+        setLoading(false);
+        return;
+      }
+      const token = localStorage.getItem("token");
+      if (token) {
+        fetchUser(token);
+      } else {
+        setUser(null);
+        setLoading(false); // Ensure loading stops if no token
+      }
+    };
+
+    window.addEventListener("authChange", updateAuthState);
+    updateAuthState(); // Initial check
+
+    return () => {
+      window.removeEventListener("authChange", updateAuthState);
+    };
+  }, []);
+
+
+
 
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -40,13 +55,17 @@ const Navbar = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUser(response?.data);
+      toast.success(`Welcome back ${response?.data?.name}`, { autoClose: 1500 })
 
     } catch (error) {
       console.error("Failed to fetch user:", error);
       localStorage.removeItem("token");
       localStorage.removeItem("guestUser");
+    } finally {
+      setLoading(false); // Set loading to false after fetching
     }
   };
+
 
   // Close both dropdown and hamburger when clicking outside
   const handleClickOutside = (event) => {
@@ -83,12 +102,12 @@ const Navbar = () => {
     setIsDropdownOpen(false);
     setIsMenuOpen(false);
     toast.success("Logout Successful!", { autoClose: 2000 });
-  
+
     setTimeout(() => {
       navigate("/login");
     }, 500);  // Small delay to allow state updates
   };
-  
+
 
   // Define paths where navbar items should be hidden
   const hideNavbarItemsPaths = [
@@ -161,65 +180,68 @@ const Navbar = () => {
 
 
           {/* User Dropdown or Login/Register */}
-          {user ? (
-            <div
-              className={`dropdown ${isDropdownOpen ? "show" : ""}`}
-              ref={dropdownRef}
-            >
-              <button
-                className="btn btn-secondary dropdown-toggle bg-black"
-                type="button"
-                aria-expanded={isDropdownOpen ? "true" : "false"}
-                onClick={toggleDropdown}
-              >
-                <i className="fa-regular fa-user mr-2"></i>
-                {user.name}
-              </button>
+          {loading ? null : (
 
-              <div className="dropdown-menu bg-white" style={{ textAlign: "center" }}>
-                <Link className="dropdown-item text-dark" to="/" onClick={() => {
-                  setIsDropdownOpen(false);
-                  setIsMenuOpen(false);  // Close hamburger menu as well
-                }}><i class="fa-solid fa-house"></i>
-                  Home
-                </Link>
-                <Link className="dropdown-item text-dark" to="/profile" onClick={() => {
-                  setIsDropdownOpen(false);
-                  setIsMenuOpen(false);  // Close hamburger menu as well
-                }}><i class="fa-solid fa-user"></i>
-                  Profile
-                </Link>
-                {user.isAdmin && (
-                  <Link className="dropdown-item text-dark" to="/admin" onClick={() => {
+            user ? (
+              <div
+                className={`dropdown ${isDropdownOpen ? "show" : ""}`}
+                ref={dropdownRef}
+              >
+                <button
+                  className="btn btn-secondary dropdown-toggle bg-black"
+                  type="button"
+                  aria-expanded={isDropdownOpen ? "true" : "false"}
+                  onClick={toggleDropdown}
+                >
+                  <i className="fa-regular fa-user mr-2"></i>
+                  {user.name}
+                </button>
+
+                <div className="dropdown-menu bg-white" style={{ textAlign: "center" }}>
+                  <Link className="dropdown-item text-dark" to="/" onClick={() => {
                     setIsDropdownOpen(false);
                     setIsMenuOpen(false);  // Close hamburger menu as well
-                  }}><i class="fa-solid fa-user-tie"></i>
-                    Admin
+                  }}><i class="fa-solid fa-house"></i>
+                    Home
                   </Link>
-                )}
-                <Link className="dropdown-item text-dark" onClick={()=>logout()}><i class="fa-solid fa-right-from-bracket"></i>
-                  Logout
-                </Link>
+                  <Link className="dropdown-item text-dark" to="/profile" onClick={() => {
+                    setIsDropdownOpen(false);
+                    setIsMenuOpen(false);  // Close hamburger menu as well
+                  }}><i class="fa-solid fa-user"></i>
+                    Profile
+                  </Link>
+                  {user.isAdmin && (
+                    <Link className="dropdown-item text-dark" to="/admin" onClick={() => {
+                      setIsDropdownOpen(false);
+                      setIsMenuOpen(false);  // Close hamburger menu as well
+                    }}><i class="fa-solid fa-user-tie"></i>
+                      Admin
+                    </Link>
+                  )}
+                  <Link className="dropdown-item text-dark" onClick={() => logout()}><i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                  </Link>
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className="userdetails">
-              <li>
-                <Link to="/register" onClick={() => setIsMenuOpen(false)}>
-                  Register
-                </Link>
-              </li>
-              <li>
-                <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                  Login
-                </Link>
-              </li>
-            </div>
+            ) : (
+              <div className="userdetails">
+                <li>
+                  <Link to="/register" onClick={() => setIsMenuOpen(false)}>
+                    Register
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+                    Login
+                  </Link>
+                </li>
+              </div>
+            )
           )}
 
         </div>
       </div>
-    </nav>
+    </nav >
   );
 };
 

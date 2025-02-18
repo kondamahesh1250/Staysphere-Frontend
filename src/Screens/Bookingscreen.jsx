@@ -61,6 +61,7 @@ const Bookingscreen = () => {
     fetchRooms();
   }, []);
 
+ 
 
   async function onToken(token) {
 
@@ -127,7 +128,7 @@ const Bookingscreen = () => {
                   token={onToken}
                   currency='INR'
                   stripeKey={process.env.REACT_APP_STRIPE_PUBLIC_KEY}>
-                  <button >Pay Now</button>
+                  <button>Pay Now</button>
                 </StripeCheckout>
 
               </div>

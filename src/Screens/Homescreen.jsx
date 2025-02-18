@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 import { DatePicker } from 'antd';
+import { AnimatePresence } from "framer-motion";
 import Room from '../Components/Room';
 import Loader from '../Components/Loader';
 import { Failure } from '../Components/Failure';
-import { Link } from 'react-router-dom';
-import { AnimatePresence } from "framer-motion";
 import "../App.css";
 
 const { RangePicker } = DatePicker;
+
 
 const Homescreen = () => {
   const [rooms, setRooms] = useState([]);
@@ -22,7 +23,25 @@ const Homescreen = () => {
   const [searchkey, setSearchKey] = useState('');
   const [type, setType] = useState('all');
 
+  const location = useLocation();
+
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+  useEffect(() => {
+    // Load stored data if it exists
+    const storedFromDate = sessionStorage.getItem("fromDate");
+    const storedToDate = sessionStorage.getItem("toDate");
+    const storedRooms = sessionStorage.getItem("filteredRooms");
+
+    if (storedFromDate && storedToDate) {
+      setFromDate(storedFromDate);
+      setToDate(storedToDate);
+    }
+
+    if (storedRooms) {
+      setRooms(JSON.parse(storedRooms)); // Restore filtered rooms
+    }
+  }, [location]);
 
   useEffect(() => {
 
@@ -44,10 +63,24 @@ const Homescreen = () => {
   }, []);
 
   function filterByDate(dates) {
+    if (!dates || dates.length === 0) {
+      // If dates are cleared, reset everything
+      setFromDate("");
+      setToDate("");
+      setRooms(duplicateRooms); // Restore all rooms when date is cleared
+      sessionStorage.removeItem("fromDate");
+      sessionStorage.removeItem("toDate");
+      sessionStorage.removeItem("filteredRooms");
+      return;
+    }
+
     const startDate = dates[0]?.format("DD-MM-YYYY");
     const endDate = dates[1]?.format("DD-MM-YYYY");
     setFromDate(startDate);
     setToDate(endDate);
+
+    sessionStorage.setItem("fromDate", startDate); // Store in session
+    sessionStorage.setItem("toDate", endDate);
 
     let tempRooms = [];
 
@@ -75,7 +108,6 @@ const Homescreen = () => {
         tempRooms.push(room);
       }
     }
-
     setRooms(tempRooms);
   }
 
@@ -95,6 +127,7 @@ const Homescreen = () => {
     }
     else {
       setRooms(duplicateRooms);
+      sessionStorage.setItem("filteredRooms", JSON.stringify(duplicateRooms));
     }
 
   }
@@ -110,7 +143,7 @@ const Homescreen = () => {
       </div>
       <div className='filtercriteria'>
         <div>
-          <RangePicker format="DD-MM-YYYY" onChange={filterByDate} className='rangepicker' disabledDate={disabledDate} />
+          <RangePicker format="DD-MM-YYYY" onChange={filterByDate} className='rangepicker' disabledDate={disabledDate} value={fromDate && toDate ? [moment(fromDate, "DD-MM-YYYY"), moment(toDate, "DD-MM-YYYY")] : null}/>
         </div>
         <div>
           <input type="text" placeholder='Search rooms' className='searchroom'
