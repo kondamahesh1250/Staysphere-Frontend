@@ -730,7 +730,8 @@
 
     .filtercriteria {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+        max-width: 250px;
         justify-content: center;
         align-items: center;
         gap: 10px;
@@ -741,7 +742,13 @@
     .searchroom,
     .selectroom {
         width: 100%;
+        max-width: 350px;
         font-size: 14px;
+    }
+
+    .searchroom{
+        text-align: justify;
+        padding-right: 50px;
     }
 }
 
