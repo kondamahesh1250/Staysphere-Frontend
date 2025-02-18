@@ -39,8 +39,10 @@ const GoogleLogin = ({ name }) => {
             const response = await axios.get(`${BASE_URL}/users/verifyuser`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            const userRole = response.data.isAdmin;
+            const userRole = response?.data?.isAdmin;
             navigate(userRole ? "/admin" : "/homescreen", { replace: true });
+            window.dispatchEvent(new Event("authChange")); // Notify Navbar
+            
 
             // Prevent navigating back to login page
             window.history.pushState(null, "", window.location.href);

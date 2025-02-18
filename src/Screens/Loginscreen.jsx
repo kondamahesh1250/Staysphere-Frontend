@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from 'react-toastify';
@@ -21,16 +21,6 @@ const Loginscreen = () => {
             [name]: value,
         }));
     }
-
-    // useEffect(() => {
-    //     const redirectPath = sessionStorage.getItem("redirectAfterLogin");
-    //     if (redirectPath) {
-    //       sessionStorage.removeItem("redirectAfterLogin"); // Clear it after using
-    //       navigate(redirectPath);
-    //     } else {
-    //       navigate("/homescreen"); // Default fallback
-    //     }
-    //   }, []);
 
     const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -70,18 +60,18 @@ const Loginscreen = () => {
             const response = await axios.get(`${BASE_URL}/users/verifyuser`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
+
             const userRole = response.data;
             if (userRole) {
                 setFormData({ email: "", password: "" });
                 navigate(userRole.isAdmin ? "/admin" : "/homescreen", { replace: true });
                 window.dispatchEvent(new Event("authChange")); // Notify Navbar
+                toast.success(`Welcome back ${response?.data?.name}`, { autoClose: 1500 })
 
                 const redirectPath = sessionStorage.getItem("redirectAfterLogin");
                 if (redirectPath) {
                     sessionStorage.removeItem("redirectAfterLogin"); // Clear it after using
                     return navigate(redirectPath, { replace: true });
-                } else {
-                    navigate("/homescreen");
                 }
 
                 // Prevent navigating back to login page
@@ -110,8 +100,6 @@ const Loginscreen = () => {
         if (redirectPath) {
             sessionStorage.removeItem("redirectAfterLogin"); // Clear it after using
             return navigate(redirectPath, { replace: true });
-        } else {
-            navigate("/homescreen"); // Default fallback
         }
 
         toast.success(" Welcome, Guest User!", { autoClose: 2000 });
@@ -122,9 +110,9 @@ const Loginscreen = () => {
     return (
         <>
             {loading && <Loader />}
-                <div className='loginhome'>
-                    <Link to={"/"}><button><i className="fa-solid fa-house"></i> Home</button></Link>
-                </div>
+            <div className='loginhome'>
+                <Link to={"/"}><button><i className="fa-solid fa-house"></i> Home</button></Link>
+            </div>
             <div className="login-container">
                 <form onSubmit={handleSubmit} className="login-form">
                     <h1 className="form-title">Login Screen</h1>
