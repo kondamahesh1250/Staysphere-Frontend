@@ -13,7 +13,6 @@ const Bookingscreen = () => {
   const navigate = useNavigate();
   const { id, fromDate, toDate } = useParams();
 
-
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -50,7 +49,7 @@ const Bookingscreen = () => {
     }
 
     fetchUser();
-    
+
     const fetchRooms = async () => {
       try {
         setLoading(true);
@@ -58,7 +57,6 @@ const Bookingscreen = () => {
         setTotalAmount(totalDays * data.rentperday);
         setRooms(data);
         setLoading(false);
-
       } catch (error) {
         setLoading(false);
         setError(true);
@@ -67,8 +65,6 @@ const Bookingscreen = () => {
 
     fetchRooms();
   }, []);
-
- 
 
   async function onToken(token) {
 
