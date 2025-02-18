@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
-import { DatePicker } from 'antd';
+import { DatePicker, Space } from 'antd';
 import { AnimatePresence } from "framer-motion";
 import Room from '../Components/Room';
 import Loader from '../Components/Loader';
@@ -138,7 +138,8 @@ const Homescreen = () => {
       </div>
       <div className='filtercriteria'>
         <div>
-          <RangePicker format="DD-MM-YYYY" onChange={filterByDate} className='rangepicker' disabledDate={disabledDate} value={fromDate && toDate ? [moment(fromDate, "DD-MM-YYYY"), moment(toDate, "DD-MM-YYYY")] : null} />
+            <RangePicker format="DD-MM-YYYY" onChange={filterByDate} className='rangepicker'
+              disabledDate={disabledDate} value={fromDate && toDate ? [moment(fromDate, "DD-MM-YYYY"), moment(toDate, "DD-MM-YYYY")] : null} />
         </div>
         <div>
           <input type="text" placeholder='Search rooms' className='searchroom'

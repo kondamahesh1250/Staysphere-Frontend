@@ -70,6 +70,7 @@
 }
 
 /* User Dropdown */
+
 .userdetails {
     display: flex;
     flex-direction: row;
@@ -157,7 +158,6 @@
 
 /* Responsive Design */
 @media screen and (max-width: 600px) {
-
     .hamburger {
         display: flex;
 
@@ -185,7 +185,6 @@
         flex-direction: column;
         gap: 10px;
     }
-
 
     .navbarinfo ul {
         flex-direction: column;
@@ -234,11 +233,8 @@
     }
 }
 
-
 /* Large Devices (Laptops and Desktops) */
 @media screen and (min-width: 901px) and (max-width: 1200px) {
-
-
     .navbar-container {
         padding: 1rem 3rem;
     }
@@ -250,7 +246,6 @@
     .logo span {
         font-size: 1.8rem;
     }
-
 
     .navbarinfo {
         position: relative;
@@ -289,11 +284,9 @@
         position: absolute !important;
         right: 10px !important;
     }
-
 }
 
 @media screen and (min-width: 1401px) {
-
     .navbarinfo {
         position: relative;
     }
@@ -312,8 +305,6 @@
         right: 10px !important;
     }
 }
-
-
 
 /* Landing Page */
 
@@ -351,6 +342,7 @@
 
 
 /* General About Us Section Styles */
+
 .about {
     width: 100%;
     background-color: #F2F2F2;
@@ -455,7 +447,6 @@
     }
 }
 
-
 /* Styles for the services section */
 
 .services {
@@ -526,8 +517,8 @@
     }
 }
 
-
 /* Styles for the contact section */
+
 .contact {
     background-color: #ffffff;
     padding: 50px 0;
@@ -721,7 +712,6 @@
 }
 
 /* Responsive Design */
-
 @media screen and (max-width: 600px) {
     .filterhome {
         text-align: end;
@@ -746,9 +736,17 @@
         font-size: 14px;
     }
 
-    .searchroom{
+    .searchroom {
         text-align: justify;
         padding-right: 50px;
+    }
+
+    /* Override Ant Design DatePicker Panel to show in column layout */
+    .ant-picker-panels {
+        flex-direction: column !important;
+        /* Change to column layout */
+        align-items: center;
+        /* Center the calendars */
     }
 }
 
@@ -781,7 +779,6 @@
         max-width: 250px;
     }
 }
-
 
 /* Room Component styling*/
 
@@ -848,7 +845,6 @@
 }
 
 /* Responsive Design */
-
 @media screen and (max-width: 600px) {
     .roomcontainer {
         width: 80vw;
@@ -927,7 +923,6 @@
     }
 }
 
-
 /* Room Details Component*/
 
 .caromain {
@@ -990,7 +985,6 @@
 }
 
 /* Responsive Design */
-
 @media screen and (max-width: 600px) {
     .caroimg {
         width: 100%;
@@ -1079,11 +1073,8 @@
         height: 350px;
     }
 
-
     .roomdetails {
         display: flex;
-        /* flex-direction: column; */
-
     }
 
     .roomleft {
@@ -1091,7 +1082,6 @@
         flex-direction: column;
         padding: 20px;
         width: 50%;
-        /* height: 70vh; */
         height: auto;
         border: 1px solid;
         border: 1px solid #ddd;
@@ -1100,7 +1090,6 @@
 
     .roomright {
         width: 50%;
-        /* height: 70vh; */
         height: auto;
         border: 1px solid;
         padding: 20px;
@@ -1110,7 +1099,6 @@
 }
 
 @media screen and (min-width: 1201px) and (max-width: 1400px) {
-
     .caroimg {
         width: 100%;
         height: 350px;
@@ -1126,7 +1114,6 @@
         flex-direction: column;
         padding: 20px;
         width: 45%;
-        /* height: 65vh; */
         height: auto;
         border: 1px solid;
         border: 1px solid #ddd;
@@ -1144,7 +1131,6 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 }
-
 
 /* Booking Screen styling*/
 
@@ -1216,7 +1202,6 @@
 }
 
 /* Responsive Design */
-
 @media screen and (max-width: 600px) {
     .bookcontainer {
         flex-direction: column;
@@ -1230,7 +1215,7 @@
         height: auto;
     }
 
-    .bookimage img{
+    .bookimage img {
         width: 90%;
         padding-bottom: 20px;
     }
@@ -1238,7 +1223,6 @@
     .bookdetails {
         width: 90%;
         height: auto;
-
     }
 
     .bookimage h1 {
@@ -1272,10 +1256,11 @@
         padding: 10px 0px;
     }
 
-    .bookimage img{
+    .bookimage img {
         width: 90%;
         padding-bottom: 20PX;
     }
+
     .bookdetails {
         width: 60%;
         height: auto;
@@ -1297,7 +1282,7 @@
         height: auto;
     }
 
-    .bookimage img{
+    .bookimage img {
         width: 90%;
         padding-bottom: 20px;
     }
@@ -1322,7 +1307,7 @@
         height: auto;
     }
 
-    .bookimage img{
+    .bookimage img {
         width: 90%;
         padding-bottom: 20PX;
     }
@@ -1330,10 +1315,8 @@
     .bookdetails {
         width: 30%;
         height: auto;
-
     }
 }
-
 
 /* Register Component Styling*/
 
@@ -1365,7 +1348,7 @@
     padding-top: 20px;
 }
 
-.homebtn:hover{
+.homebtn:hover {
     color: #484646;
 }
 
@@ -1379,13 +1362,11 @@
     padding: 40px 60px;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-
 }
 
 .register-form>h1 {
     font-size: 30px;
 }
-
 
 label {
     flex: 1;
@@ -1430,6 +1411,7 @@ input[type="password"]:focus {
     background-color: #54575a;
 }
 
+/* Responsive Design*/
 @media (max-width: 768px) {
     .registercontainer {
         padding: 15px;
@@ -1457,7 +1439,6 @@ input[type="password"]:focus {
     }
 }
 
-
 @media screen and (min-width: 769px) and (max-width: 900px) {
     .registercontainer {
         gap: 15px;
@@ -1466,7 +1447,6 @@ input[type="password"]:focus {
     .register-form {
         min-width: 45vw;
     }
-
 }
 
 @media screen and (min-width: 901px) and (max-width: 1200px) {
@@ -1510,7 +1490,7 @@ input[type="password"]:focus {
     padding-top: 20px;
 }
 
-.loginhome button:hover{
+.loginhome button:hover {
     color: #484646;
 }
 
@@ -1552,8 +1532,8 @@ input[type="password"]:focus {
     background-color: #41464b;
 }
 
+/* Responsive Design*/
 @media (max-width: 768px) {
-
     .loginhome {
         width: 100%;
         text-align: end;
@@ -1562,7 +1542,6 @@ input[type="password"]:focus {
     .login-form {
         min-width: 50vw;
     }
-
 
     .login-container {
         width: 100%;
@@ -1635,7 +1614,6 @@ input[type="password"]:focus {
 }
 
 /* Responsive Design */
-
 @media screen and (max-width: 600px) {
     .profile-container {
         padding: 15px;
@@ -1649,7 +1627,6 @@ input[type="password"]:focus {
         font-size: 16px;
     }
 }
-
 
 .profilebooking {
     display: flex;
@@ -1700,7 +1677,6 @@ input[type="password"]:focus {
 }
 
 /* Responsive Design */
-
 @media screen and (max-width: 600px) {
     .profilebooking {
         width: 90%;
@@ -1745,7 +1721,6 @@ input[type="password"]:focus {
     }
 }
 
-
 /* Admin Panel Component (Add Room)*/
 
 .addroom {
@@ -1770,7 +1745,7 @@ input[type="password"]:focus {
     width: 50vw;
 }
 
-.leftinput input{
+.leftinput input {
     width: 100%;
     height: 50px;
     padding-left: 10px;
@@ -1783,7 +1758,7 @@ input[type="password"]:focus {
     width: 50vw;
 }
 
-.rightinput>input{
+.rightinput>input {
     width: 100%;
     height: 50px;
     padding-left: 10px;
@@ -1793,13 +1768,13 @@ input[type="password"]:focus {
     text-align: center;
 }
 
-.addroombtn>button{
+.addroombtn>button {
     padding: 5px;
     margin-bottom: 20px;
     border-radius: 5px;
 }
 
-.addroombtn>button:hover{
+.addroombtn>button:hover {
     background-color: #797575;
 }
 
@@ -1815,6 +1790,6 @@ input[type="password"]:focus {
     border-radius: 5px;
 }
 
-.a_room_btn:hover{
+.a_room_btn:hover {
     background-color: #797575;
 }
