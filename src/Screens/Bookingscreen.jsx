@@ -40,7 +40,7 @@ const Bookingscreen = () => {
       if (!token) {
         return;
       }
-      const response = await axios.get("/users/verifyuser", {
+      const response = await axios.get(`${BASE_URL}/users/verifyuser`, {
         headers: {
           "Authorization": `Bearer ${token}`,
         }
