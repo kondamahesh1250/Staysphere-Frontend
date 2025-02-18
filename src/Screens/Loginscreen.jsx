@@ -124,14 +124,6 @@ const Loginscreen = () => {
                         <input type="password" class="form-control" id="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
                         <label for="password">Password</label>
                     </div>
-                    {/* <div className="form-group">
-                        <label htmlFor="email" className="form-label">Email</label>
-                        <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className="form-input" />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="password" className="form-label">Password</label>
-                        <input type="password" name="password" id="password" value={formData.password} onChange={handleChange} className="form-input" />
-                    </div> */}
                     <button type="submit" className="form-button">Login</button>
                 </form>
                 <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>

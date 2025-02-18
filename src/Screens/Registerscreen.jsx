@@ -91,22 +91,6 @@ const Registerscreen = () => {
                             <input type="password" class="form-control" id="password" name="c_password" value={formData.c_password} onChange={handleChange} placeholder="Password" />
                             <label for="password">Confirm Password</label>
                         </div>
-                        {/* <div>
-                            <label htmlFor="name">Name</label>
-                            <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="email">Email</label>
-                            <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="password">Password</label>
-                            <input type="password" name="password" id="password" value={formData.password} onChange={handleChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="c_password">Confirm Password</label>
-                            <input type="password" name="c_password" id="c_password" value={formData.c_password} onChange={handleChange} />
-                        </div> */}
                         <button type="submit" className="registerbtn">Register</button>
                     </form>
                 </div>
